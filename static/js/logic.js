@@ -8,17 +8,16 @@ var myMap = L.map("map", {
     attribution: "© OpenStreetMap contributors",
   }).addTo(myMap);
   
-  // Fetch the JSON data
+  // Fetch the JSON data using d3
   // I decided that I wanted to study the significant earthquakes over the past 30 days
   // instead of all earthquake data over the past week, just to cater to my own interests. 
   //As a result, I have fewer data points in my visualization, but the url
   // for all earthquakes over past 7 days could easily be substituted into my code.
-  fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson")
-    .then((response) => response.json())
-    .then((earthquakeData) => {
-      earthquakeData.features.forEach((earthquake) => {
-        var magnitude = earthquake.properties.mag;
-        var depth = earthquake.geometry.coordinates[2];
+  d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson")
+  .then((earthquakeData) => {
+    earthquakeData.features.forEach((earthquake) => {
+      var magnitude = earthquake.properties.mag;
+      var depth = earthquake.geometry.coordinates[2];
   
         var marker = L.circleMarker(
           [earthquake.geometry.coordinates[1], earthquake.geometry.coordinates[0]],
